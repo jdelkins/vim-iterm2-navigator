@@ -109,3 +109,9 @@ strings. For example:
 let &titlestring='%t - NVIM'
 ```
 
+License
+-------
+
+This project is licensed under [the same terms as Vim itself](https://github.com/vim/vim/blob/master/LICENSE).
+
+Copyright (c) Joel D. Elkins <joel@elkins.co>. All rights reserved.
