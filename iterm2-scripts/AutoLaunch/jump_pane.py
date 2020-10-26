@@ -14,7 +14,7 @@ async def main(connection):
     async def do_jump(session_id, direction):
         sess = app.get_session_by_id(session_id)
         title = await sess.async_get_variable('terminalWindowName')
-        if re.match(r'.* - n?vim$', title):
+        if re.match(r'.* - N?VIM$', title):
             await sess.async_send_text(f'{direction}', suppress_broadcast=True)
         else:
             argmap = {
