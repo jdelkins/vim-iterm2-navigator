@@ -40,7 +40,8 @@ installed and configured, the following steps will install the plugin:
 Add the following line to your `~/.vimrc` or `~/.config/nvim/init.vim` file.
 
 ```viml
-Plug 'jdelkins/vim-iterm2-navigator'
+Plug 'jdelkins/vim-iterm2-navigator', {'branch': 'main', 'do': {-> iterm2_navigator#install()}}
+set title
 ```
 
 Then run
@@ -54,6 +55,10 @@ Then run
 This is the trickiest part, requiring a number of steps to set up.
 
 **1. Symlink the scripts for iTerm2**
+
+The `iterm2_navigator#install()` function should handle this part for you (on
+macOS), but in case you want to manually install, follow this general
+procedure.
 
 <pre lang="bash">
 <code>$ mkdir -p "~/Library/Application Support/iTerm2/Scripts/AutoLaunch"
