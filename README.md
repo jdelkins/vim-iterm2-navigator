@@ -13,7 +13,14 @@ hotkeys.
 **NOTE 1**: This requires iTerm2 v3.3 or higher, in order to support the
 [python API](https://www.iterm2.com/python-api/).
 
-**NOTE 2**: This plugin is quite hacky, and as such assumes you know basic unix
+**NOTE 2**: This requires `python3` feature, which, on [neovim][], involves only
+installing python3 and [pynvim](https://pypi.org/project/pynvim/). Developed
+and used on [neovim][]. Untested on [vanilla vim](https://www.vim.org/) (I'd
+actually be a bit surprised if it worked).
+
+[neovim]: https://neovim.io
+
+**NOTE 3**: This plugin is quite hacky, and as such assumes you know basic unix
 shell skills, like how to make symbolic links and so on. If you are not at that
 level, this plugin will prove frustrating.
 
@@ -30,6 +37,9 @@ Vim panes and iTerm2 splits seamlessly.
 
 Installation
 ------------
+
+As this software is an integration between iTerm and vim, it will require
+some configuration in both software packages.
 
 ### Vim
 
@@ -57,12 +67,11 @@ This is the trickiest part, requiring a number of steps to set up.
 **1. Symlink the scripts for iTerm2**
 
 The `iterm2_navigator#install()` function should handle this part for you (on
-macOS), but in case you want to manually install, follow this general
-procedure.
+macOS, the only platform where iTerm2 is available), but in case you want to
+manually install, follow this general procedure.
 
 <pre lang="bash">
 <code>$ mkdir -p "~/Library/Application Support/iTerm2/Scripts/AutoLaunch"
-$ ln -s <i><b>«vimdir»</b></i>/bundle/vim-iterm2-navigator/iterm2-scripts/force_jump_pane.py "~/Library/Application Support/iIterm2/Scripts/"
 $ ln -s <i><b>«vimdir»</b></i>/bundle/vim-iterm2-navigator/iterm2-scripts/AutoLaunch/jump_pane.py "~/Library/Application Support/iTerm2/Scripts/AutoLaunch/"
 </code></pre>
 
@@ -77,22 +86,21 @@ $ ln -s <i><b>«vimdir»</b></i>/bundle/vim-iterm2-navigator/iterm2-scripts/Auto
   - Under `Preferences`→`Keys`→`Key Bindings`, Click `+` to create a new key binding
   - For shortcut key, enter `⌘h`
   - For `Action`, choose `Invoke Script Function...`
-  - In the `function call` box, enter
+  - In the `function call` box, enter: `do_jump(session_id: id, direction: "h")`
 
-    `do_jump(session_id: id, direction: "h")`
+Repeat the above (#3) procedure, replacing `h` with `j`, `k`, and `l`.
+The end result should be four key bindings, each calling the `do_jump`
+RPC coroutine respectively with parameters of `h`, `j`, `k`, and `l`.
 
-    Repeat the above (#3) procedure, replacing `h` with `j`, `k`, and `l`.
-    The end result should be four key bindings, each calling the `do_jump`
-    RPC coroutine respectively with parameters of `h`, `j`, `k`, and `l`.
+**Note:** You can use any key combination instead of `⌘h` etc. Vim will
+never see these keystrokes, as they will be captured by iTerm2, and the
+python script will translate them to intermediate keystrokes to trigger the
+Vim maps defined in the plugin. These intermediate maps are designed to be
+(hopefully) distinct.
 
-    **Note:** You can use any key combination instead of `⌘h` etc. Vim will
-    never see these keystrokes, as they will be captured by iTerm2, and the
-    python script will translate them to intermediate keystrokes to trigger the Vim maps defined in the plugin. These intermediate maps are
-    designed to be (hopefully) distinct.
-
-    **Advanced info**: These intermediate keystrokes are `<C-_>{h,j,k,l}`. If
-    you want to change them (presumably due to a conflict with another map
-    you are using), then you'll have to edit the python and vim scripts.
+**Advanced info**: These intermediate keystrokes are `<C-_>{h,j,k,l}`. If
+you want to change them (presumably due to a conflict with another map
+you are using), then you'll have to edit the python and vim scripts.
 
 ### Vim configuration
     

@@ -2,16 +2,33 @@
 " move panes, unles the pane is a vim session, in which case it calls this
 " function.
 
-if exists("g:loaded_iterm2_navigator") || &cp || v:version < 700
+if exists("g:loaded_iterm2_navigator") || &cp || v:version < 700 || !has('python3')
   finish
 endif
 let g:loaded_iterm2_navigator = 1
+
+py3 <<EOF
+import iterm2
+from iterm2.connection import Connection
+import asyncio
+
+async def force_jump_pane(dir):
+    conn = await Connection.async_create()
+    argmap = {
+        'h': 'Left',
+        'j': 'Below',
+        'k': 'Above',
+        'l': 'Right',
+    }
+    menu = 'Select Split Pane.Select Pane {}'.format(argmap[dir])
+    await iterm2.MainMenu.async_select_menu_item(conn, identifier=menu)
+EOF
 
 function! ItermSwitchWindow(key) abort
   let startwindow = winnr()
   exe "wincmd" a:key
   if startwindow == winnr()
-    call system('osascript -e ' . shellescape('tell application "iTerm" to launch API script named "force_jump_pane.py" arguments ["' . a:key . '"]'))
+    py3 asyncio.ensure_future(force_jump_pane(vim.eval('a:key')))
   endif
 endfunction
 
