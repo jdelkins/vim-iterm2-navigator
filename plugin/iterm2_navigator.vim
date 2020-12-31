@@ -8,20 +8,24 @@ endif
 let g:loaded_iterm2_navigator = 1
 
 py3 <<EOF
-import iterm2
-from iterm2.connection import Connection
 import asyncio
+try:
+  import iterm2
+  from iterm2.connection import Connection
 
-async def force_jump_pane(dir):
-    conn = await Connection.async_create()
-    argmap = {
-        'h': 'Left',
-        'j': 'Below',
-        'k': 'Above',
-        'l': 'Right',
-    }
-    menu = 'Select Split Pane.Select Pane {}'.format(argmap[dir])
-    await iterm2.MainMenu.async_select_menu_item(conn, identifier=menu)
+  async def force_jump_pane(dir):
+      conn = await Connection.async_create()
+      argmap = {
+          'h': 'Left',
+          'j': 'Below',
+          'k': 'Above',
+          'l': 'Right',
+      }
+      menu = 'Select Split Pane.Select Pane {}'.format(argmap[dir])
+      await iterm2.MainMenu.async_select_menu_item(conn, identifier=menu)
+except:
+  async def force_jump_pane(_):
+    pass
 EOF
 
 function! ItermSwitchWindow(key) abort

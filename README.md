@@ -38,8 +38,8 @@ Vim panes and iTerm2 splits seamlessly.
 Installation
 ------------
 
-As this software is an integration between iTerm and vim, it will require
-some configuration in both software packages.
+As this software is an integration between iTerm2, vim, and python, it will
+require some configuration in all three software packages.
 
 ### Vim
 
@@ -101,6 +101,24 @@ Vim maps defined in the plugin. These intermediate maps are designed to be
 **Advanced info**: These intermediate keystrokes are `<C-_>{h,j,k,l}`. If
 you want to change them (presumably due to a conflict with another map
 you are using), then you'll have to edit the python and vim scripts.
+
+### Python
+
+This tool requires the [iterm2 python module](https://pypi.org/project/iterm2/)
+as well as the python interpreter in vim. For neovim, this requires the
+[pynvim python module](https://pypi.org/project/pynvim/) and a system
+installation of python3 itself. Use with vanilla vim should work in theory (as
+long the binary was built with python3 support) but it's completely untested by
+me.
+
+```shell
+pip install pynvim
+pip install iterm2
+```
+
+If these supporting modules are not available, this package will silently not
+function. If you think it should be working but isn't, double check the
+requrements in this section.
 
 ### Vim configuration
     
